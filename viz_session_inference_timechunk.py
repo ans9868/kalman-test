@@ -174,17 +174,28 @@ def annotate_pred_bands(ax, grid, id_to_acr, min_run=20):
                           boxstyle="round,pad=0.15"))
 
 
-def render(npz_path, out_path):
+def render(npz_path, out_path, pred_key="pred_xyz_gauss"):
     d = np.load(npz_path, allow_pickle=True)
-    pred = d["pred_xyz_gauss"]                      # (n_ch, n_chunks, 3)
-    ch_acrs = np.array([str(a) for a in d["channel_acronyms"].tolist()])
+    if pred_key not in d.files:
+        raise KeyError(
+            f"{pred_key!r} not in {npz_path.name}. Available keys: {sorted(d.files)}"
+        )
+    pred = d[pred_key]                              # (n_ch, n_chunks, 3)
+    # Chronic Mishi outputs lack ground-truth region labels (no histology).
+    # Fall back to placeholder acronyms and skip the GT-strip annotations.
+    has_gt = "channel_acronyms" in d.files
+    if has_gt:
+        ch_acrs = np.array([str(a) for a in d["channel_acronyms"].tolist()])
+    else:
+        ch_acrs = np.array(["UNK"] * pred.shape[0])
     axial = d["channel_axial_um"].astype(np.float32)
     pid = str(d["pid"])
     chunk_dur = float(d["chunk_dur_sec"])
 
     n_ch, n_chunks, _ = pred.shape
     print(f"  pid={pid}  n_ch={n_ch}  n_chunks={n_chunks}  "
-          f"chunk_dur={chunk_dur:.1f}s  → {n_chunks * chunk_dur / 60:.1f} min")
+          f"chunk_dur={chunk_dur:.1f}s  → {n_chunks * chunk_dur / 60:.1f} min  "
+          f"pred_key={pred_key}  has_gt={has_gt}")
 
     # Sort channels surface→deep using axial position (high axial = base).
     # IBL probes are inserted top-down so the TIP (low axial) is DEEPEST in
@@ -250,7 +261,8 @@ def render(npz_path, out_path):
     )
     ax_gt.set_ylabel("Channel (surface → tip)", fontsize=11)
     ax_gt.set_ylim(n_ch, 0)
-    annotate_gt_strip(ax_gt, gt_strip, id_to_acr, min_run=2)
+    if has_gt:
+        annotate_gt_strip(ax_gt, gt_strip, id_to_acr, min_run=2)
     annotate_pred_bands(ax, grid, id_to_acr)
 
     fig.subplots_adjust(left=0.04, right=0.99, top=0.94, bottom=0.07)
@@ -261,33 +273,48 @@ def render(npz_path, out_path):
 
 def main():
     ap = argparse.ArgumentParser()
+    ap.add_argument("--root", default=str(SESSION_ROOT),
+                    help=f"Session root directory (default: {SESSION_ROOT})")
     ap.add_argument("--pid", default=None,
-                    help="Insertion PID. Default = render every PID under "
-                         "session_inference/.")
+                    help="Insertion PID. Default = render every PID under root.")
     ap.add_argument("--all", action="store_true",
-                    help="Render all PIDs under session_inference/")
+                    help="Render all PIDs under root")
+    ap.add_argument("--pred_key", default="pred_xyz_gauss",
+                    help="Which prediction array in the npz to render. Common "
+                         "choices: pred_xyz_gauss (raw chunk-level), "
+                         "pred_xyz_kalman_filter, pred_xyz_kalman_smooth.")
+    ap.add_argument("--in_name", default="predictions.npz",
+                    help="Filename to read inside each session dir "
+                         "(default predictions.npz; use predictions_kalman.npz "
+                         "to render Kalman outputs).")
     args = ap.parse_args()
 
+    root = Path(args.root)
     if args.pid:
-        targets = [SESSION_ROOT / args.pid]
+        targets = [root / args.pid]
     else:
-        targets = sorted([p for p in SESSION_ROOT.iterdir() if p.is_dir()])
+        targets = sorted([p for p in root.iterdir() if p.is_dir()])
         if not args.all and len(targets) > 1:
-            print(f"[!] {len(targets)} PIDs found under {SESSION_ROOT}. "
+            print(f"[!] {len(targets)} PIDs found under {root}. "
                   f"Pass --all to render every one, or --pid <id> for one.")
             for p in targets:
                 print(f"    {p.name}")
             return 1
 
+    # Suffix the output filename with the pred_key so raw vs Kalman heatmaps
+    # land at different paths and can be compared side-by-side.
+    suffix = args.pred_key.replace("pred_xyz_", "")  # e.g. "gauss" / "kalman_smooth"
+    out_name = f"channel_timechunk_{suffix}.png"
+
     n = 0
     for tgt in targets:
-        npz = tgt / "predictions.npz"
+        npz = tgt / args.in_name
         if not npz.exists():
-            print(f"[skip] no predictions.npz under {tgt.name}")
+            print(f"[skip] no {args.in_name} under {tgt.name}")
             continue
-        out = tgt / "channel_timechunk.png"
+        out = tgt / out_name
         print(f"\n=== {tgt.name} ===")
-        render(npz, out)
+        render(npz, out, pred_key=args.pred_key)
         n += 1
     print(f"\n[+] rendered {n} session(s)")
     return 0

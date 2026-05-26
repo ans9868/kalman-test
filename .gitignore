@@ -1,0 +1,20 @@
+# local venv used for running kalman/plot scripts on the Mac
+.venv/
+
+# pycache
+__pycache__/
+*.pyc
+
+# inference outputs
+outputs/
+logs/
+
+# test artifacts (Kalman / viz / plot outputs)
+mock_predictions*.npz
+*.png
+
+# OS junk
+.DS_Store
+
+# Claude Code session-local state
+.claude/

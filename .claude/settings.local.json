@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -A 10 -i \"torch\\\\|host \" ~/.ssh/config 2>/dev/null | head -80)",
+      "Read(//Volumes/CrucialX6/Home/.ssh/**)"
+    ]
+  }
+}

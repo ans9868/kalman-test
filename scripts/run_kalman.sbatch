@@ -1,5 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=kalman-refine
+#SBATCH --account=torch_pr_60_tandon_advanced
+#SBATCH --partition=a100_tandon
 #SBATCH --cpus-per-task=2
 #SBATCH --mem=8G
 #SBATCH --time=00:30:00

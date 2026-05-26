@@ -7,7 +7,9 @@
 # Refer to memory: torch-hpc-scratch-redirection.
 
 set -e
-set -u
+# NB: do NOT set -u. Conda's MKL activation hook references MKL_INTERFACE_LAYER
+# unconditionally and would error here. The shell scripts we run handle their
+# own undefined-var safety where it matters.
 
 # ─── scratch-redirect everything that might write to $HOME ───
 export PYTHONNOUSERSITE=True
@@ -30,6 +32,3 @@ conda activate ${KALMAN_ENV_PREFIX:-$SCRATCH/conda_storage/kalman}
 echo "[prelude] HOME=$HOME"
 echo "[prelude] CONDA_PREFIX=${CONDA_PREFIX:-(unset)}"
 echo "[prelude] python=$(which python)  $(python --version 2>&1)"
-
-# Re-enable strict mode for caller
-set +u

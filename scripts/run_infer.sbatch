@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=kalman-infer
-#SBATCH --account=torch_pr_60_tandon_advanced
+#SBATCH --account=torch_pr_60_tandon_priority
 #SBATCH --partition=h100_tandon
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=4

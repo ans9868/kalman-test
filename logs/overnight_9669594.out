@@ -1,0 +1,394 @@
+[prelude] HOME=/scratch/ans9868/kalman_scratch/home
+[prelude] CONDA_PREFIX=/scratch/ans9868/conda_storage/kalman
+[prelude] python=/scratch/ans9868/conda_storage/kalman/bin/python  Python 3.11.15
+[overnight] sessions: TES_sResp_M05_20240729 TES_sResp_M05_20240730 TES_sResp_M05_20240731 TES_sResp_M05_20241014 TES_sResp_M05_20241015
+[overnight] out_root: /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2
+[overnight] window:   5 min
+[overnight] ckpt:     /scratch/pl2820/ray_results/benchmarks/finetune_xyz_75k_joint_lambda_3_0_7741664/checkpoints/finetune_best_valmse.pt
+
+============================================================
+[overnight] STAGE 1: inference
+============================================================
+[chronic_v2] device: cuda:0
+[chronic_v2] Loading Path B ckpt: finetune_best_valmse.pt
+[chronic_v2]   ep 46  val_mse 0.0083
+[chronic_v2] 
+=== TES_sResp_M05_20240729 ===
+[chronic_v2]   [skip] /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240729/predictions.npz exists
+[chronic_v2] 
+=== TES_sResp_M05_20240730 ===
+[chronic_v2]   TES_sResp_M05_20240730: 257.4 min total (19305615 samples)
+[chronic_v2]   Window: [7572s, 7872s] = 100 chunks × 3.0s
+[chronic_v2]   Calibration: raw_std=324.6 → scale=2.74e-07
+[chronic_v2]     chunk 20/100  (13s elapsed)
+[chronic_v2]     chunk 40/100  (20s elapsed)
+[chronic_v2]     chunk 60/100  (26s elapsed)
+[chronic_v2]     chunk 80/100  (32s elapsed)
+[chronic_v2]     chunk 100/100  (38s elapsed)
+[chronic_v2]   Done: 38s for 100 chunks × 384 ch
+[chronic_v2]   Saved /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240730/predictions.npz
+[chronic_v2] 
+=== TES_sResp_M05_20240731 ===
+[chronic_v2]   TES_sResp_M05_20240731: 230.3 min total (17274988 samples)
+[chronic_v2]   Window: [6760s, 7060s] = 100 chunks × 3.0s
+[chronic_v2]   Calibration: raw_std=341.9 → scale=2.60e-07
+[chronic_v2]     chunk 20/100  (6s elapsed)
+[chronic_v2]     chunk 40/100  (13s elapsed)
+[chronic_v2]     chunk 60/100  (19s elapsed)
+[chronic_v2]     chunk 80/100  (25s elapsed)
+[chronic_v2]     chunk 100/100  (31s elapsed)
+[chronic_v2]   Done: 31s for 100 chunks × 384 ch
+[chronic_v2]   Saved /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240731/predictions.npz
+[chronic_v2] 
+=== TES_sResp_M05_20241014 ===
+[chronic_v2]   TES_sResp_M05_20241014: 267.3 min total (20050729 samples)
+[chronic_v2]   Window: [7870s, 8170s] = 100 chunks × 3.0s
+[chronic_v2]   Calibration: raw_std=331.4 → scale=2.69e-07
+[chronic_v2]     chunk 20/100  (6s elapsed)
+[chronic_v2]     chunk 40/100  (13s elapsed)
+[chronic_v2]     chunk 60/100  (19s elapsed)
+[chronic_v2]     chunk 80/100  (25s elapsed)
+[chronic_v2]     chunk 100/100  (31s elapsed)
+[chronic_v2]   Done: 31s for 100 chunks × 384 ch
+[chronic_v2]   Saved /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20241014/predictions.npz
+[chronic_v2] 
+=== TES_sResp_M05_20241015 ===
+[chronic_v2]   TES_sResp_M05_20241015: 175.5 min total (13165640 samples)
+[chronic_v2]   Window: [5116s, 5416s] = 100 chunks × 3.0s
+[chronic_v2]   Calibration: raw_std=332.2 → scale=2.68e-07
+[chronic_v2]     chunk 20/100  (6s elapsed)
+[chronic_v2]     chunk 40/100  (13s elapsed)
+[chronic_v2]     chunk 60/100  (19s elapsed)
+[chronic_v2]     chunk 80/100  (25s elapsed)
+[chronic_v2]     chunk 100/100  (31s elapsed)
+[chronic_v2]   Done: 31s for 100 chunks × 384 ch
+[chronic_v2]   Saved /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20241015/predictions.npz
+[chronic_v2] 
+Done. Run viz_session_inference_timechunk.py per session.
+
+============================================================
+[overnight] STAGE 2: Kalman + viz + plot_stability
+============================================================
+
+--- TES_sResp_M05_20240729 ---
+[kalman] in : /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240729/predictions.npz
+[kalman] out: /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240729/predictions_kalman.npz
+[kalman]   pid=TES_sResp_M05_20240729  (n_ch=384, n_chunks=100, 3)  chunk_dur=3.0s  → 5.0 min
+
+[kalman] running filter+smoother: Q=100 µm²  R∈[50,3000] µm  scale_R=1.0
+[kalman] computing baseline aggregations…
+
+[kalman] time-to-stability (K=10 chunks = 30s):
+  100µm: 384/384 ch stable, median 147.0s
+  200µm: 384/384 ch stable, median 42.0s
+
+[kalman] outlier rate (>1000µm from reference):
+  raw vs per-channel median:    27.1875%
+  raw vs Kalman-smoothed track: 27.1172%
+
+[kalman] saving /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240729/predictions_kalman.npz …
+[kalman] sidecar /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240729/predictions_kalman.json
+[kalman] done.
+
+=== TES_sResp_M05_20240729 ===
+  pid=TES_sResp_M05_20240729  n_ch=384  n_chunks=100  chunk_dur=3.0s  → 5.0 min  pred_key=pred_xyz_gauss  has_gt=False
+  wrote /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240729/channel_timechunk_gauss.png
+
+[+] rendered 1 session(s)
+
+=== TES_sResp_M05_20240729 ===
+  pid=TES_sResp_M05_20240729  n_ch=384  n_chunks=100  chunk_dur=3.0s  → 5.0 min  pred_key=pred_xyz_kalman_smooth  has_gt=False
+  wrote /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240729/channel_timechunk_kalman_smooth.png
+
+[+] rendered 1 session(s)
+[plot] in:    /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240729/predictions_kalman.npz
+[plot] curve: /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240729/stability_curve.png
+[plot] table: /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240729/aggregation_table.txt
+[plot] wrote /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240729/stability_curve.png
+[plot] wrote /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240729/aggregation_table.txt
+
+PID: TES_sResp_M05_20240729
+  n_channels: 384
+  n_chunks:   100
+  chunk_dur:  3.0s
+
+Per-channel disagreement vs kalman_smooth_mean (treated as offline best estimate):
+
+  method                 |  mean ‖Δ‖   med ‖Δ‖ |  bias AP  bias DV  bias ML |  std AP  std DV  std ML    (all µm)
+  ---------------------------------------------------------------------------------------------------------------
+  unweighted_mean        |     192.1     162.6 |   -149.2    -10.9    -38.0 |   765.2   290.4   127.9
+  weighted_mean          |       2.1       1.2 |     +0.7     -0.1     +0.3 |   784.0   317.8   122.1
+  median                 |     191.4     158.6 |   -116.5    -16.1    -53.6 |   752.4   332.8   148.1
+  trimmed_mean           |     178.5     145.3 |   -124.3    -14.1    -43.6 |   755.6   307.7   133.8
+  kalman_filter_T        |      36.3      32.0 |    +29.1     -2.5    +14.5 |   772.6   309.8   121.2
+  kalman_smooth_T        |      36.3      32.0 |    +29.1     -2.5    +14.5 |   772.6   309.8   121.2
+  kalman_smooth_mean     |       0.0       0.0 |     +0.0     +0.0     +0.0 |   782.5   317.0   121.9
+
+
+--- TES_sResp_M05_20240730 ---
+[kalman] in : /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240730/predictions.npz
+[kalman] out: /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240730/predictions_kalman.npz
+[kalman]   pid=TES_sResp_M05_20240730  (n_ch=384, n_chunks=100, 3)  chunk_dur=3.0s  → 5.0 min
+
+[kalman] running filter+smoother: Q=100 µm²  R∈[50,3000] µm  scale_R=1.0
+[kalman] computing baseline aggregations…
+
+[kalman] time-to-stability (K=10 chunks = 30s):
+  100µm: 384/384 ch stable, median 156.0s
+  200µm: 384/384 ch stable, median 30.0s
+
+[kalman] outlier rate (>1000µm from reference):
+  raw vs per-channel median:    25.6094%
+  raw vs Kalman-smoothed track: 25.3073%
+
+[kalman] saving /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240730/predictions_kalman.npz …
+[kalman] sidecar /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240730/predictions_kalman.json
+[kalman] done.
+
+=== TES_sResp_M05_20240730 ===
+  pid=TES_sResp_M05_20240730  n_ch=384  n_chunks=100  chunk_dur=3.0s  → 5.0 min  pred_key=pred_xyz_gauss  has_gt=False
+  wrote /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240730/channel_timechunk_gauss.png
+
+[+] rendered 1 session(s)
+
+=== TES_sResp_M05_20240730 ===
+  pid=TES_sResp_M05_20240730  n_ch=384  n_chunks=100  chunk_dur=3.0s  → 5.0 min  pred_key=pred_xyz_kalman_smooth  has_gt=False
+  wrote /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240730/channel_timechunk_kalman_smooth.png
+
+[+] rendered 1 session(s)
+[plot] in:    /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240730/predictions_kalman.npz
+[plot] curve: /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240730/stability_curve.png
+[plot] table: /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240730/aggregation_table.txt
+[plot] wrote /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240730/stability_curve.png
+[plot] wrote /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240730/aggregation_table.txt
+
+PID: TES_sResp_M05_20240730
+  n_channels: 384
+  n_chunks:   100
+  chunk_dur:  3.0s
+
+Per-channel disagreement vs kalman_smooth_mean (treated as offline best estimate):
+
+  method                 |  mean ‖Δ‖   med ‖Δ‖ |  bias AP  bias DV  bias ML |  std AP  std DV  std ML    (all µm)
+  ---------------------------------------------------------------------------------------------------------------
+  unweighted_mean        |     193.3     165.6 |   -174.8    +18.6    -56.5 |   776.6   274.0   123.1
+  weighted_mean          |       0.9       0.9 |     +0.7     -0.0     +0.3 |   732.0   262.2   121.7
+  median                 |     162.3     154.2 |    -91.8    +53.9    -77.8 |   755.3   310.8   139.0
+  trimmed_mean           |     171.6     142.6 |   -138.9    +29.8    -67.9 |   769.3   293.0   129.4
+  kalman_filter_T        |      22.0      20.8 |    +18.7     +0.7     +4.0 |   734.3   262.0   124.1
+  kalman_smooth_T        |      22.0      20.8 |    +18.7     +0.7     +4.0 |   734.3   262.0   124.1
+  kalman_smooth_mean     |       0.0       0.0 |     +0.0     +0.0     +0.0 |   732.1   262.3   121.7
+
+
+--- TES_sResp_M05_20240731 ---
+[kalman] in : /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240731/predictions.npz
+[kalman] out: /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240731/predictions_kalman.npz
+[kalman]   pid=TES_sResp_M05_20240731  (n_ch=384, n_chunks=100, 3)  chunk_dur=3.0s  → 5.0 min
+
+[kalman] running filter+smoother: Q=100 µm²  R∈[50,3000] µm  scale_R=1.0
+[kalman] computing baseline aggregations…
+
+[kalman] time-to-stability (K=10 chunks = 30s):
+  100µm: 384/384 ch stable, median 129.0s
+  200µm: 384/384 ch stable, median 48.0s
+
+[kalman] outlier rate (>1000µm from reference):
+  raw vs per-channel median:    20.8672%
+  raw vs Kalman-smoothed track: 21.1719%
+
+[kalman] saving /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240731/predictions_kalman.npz …
+[kalman] sidecar /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240731/predictions_kalman.json
+[kalman] done.
+
+=== TES_sResp_M05_20240731 ===
+  pid=TES_sResp_M05_20240731  n_ch=384  n_chunks=100  chunk_dur=3.0s  → 5.0 min  pred_key=pred_xyz_gauss  has_gt=False
+  wrote /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240731/channel_timechunk_gauss.png
+
+[+] rendered 1 session(s)
+
+=== TES_sResp_M05_20240731 ===
+  pid=TES_sResp_M05_20240731  n_ch=384  n_chunks=100  chunk_dur=3.0s  → 5.0 min  pred_key=pred_xyz_kalman_smooth  has_gt=False
+  wrote /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240731/channel_timechunk_kalman_smooth.png
+
+[+] rendered 1 session(s)
+[plot] in:    /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240731/predictions_kalman.npz
+[plot] curve: /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240731/stability_curve.png
+[plot] table: /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240731/aggregation_table.txt
+[plot] wrote /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240731/stability_curve.png
+[plot] wrote /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240731/aggregation_table.txt
+
+PID: TES_sResp_M05_20240731
+  n_channels: 384
+  n_chunks:   100
+  chunk_dur:  3.0s
+
+Per-channel disagreement vs kalman_smooth_mean (treated as offline best estimate):
+
+  method                 |  mean ‖Δ‖   med ‖Δ‖ |  bias AP  bias DV  bias ML |  std AP  std DV  std ML    (all µm)
+  ---------------------------------------------------------------------------------------------------------------
+  unweighted_mean        |     174.6     146.3 |   -163.8    -45.2    -22.7 |   616.7   283.8   123.4
+  weighted_mean          |       1.0       0.7 |     +0.8     +0.0     +0.4 |   582.3   290.8   114.9
+  median                 |     147.0     131.2 |   -121.8    -18.3    -35.3 |   624.6   325.6   133.7
+  trimmed_mean           |     150.9     130.4 |   -142.2    -28.1    -28.6 |   623.5   301.8   126.3
+  kalman_filter_T        |      24.5      22.6 |    +16.9     +1.6    +10.2 |   585.5   291.2   114.9
+  kalman_smooth_T        |      24.5      22.6 |    +16.9     +1.6    +10.2 |   585.5   291.2   114.9
+  kalman_smooth_mean     |       0.0       0.0 |     +0.0     +0.0     +0.0 |   582.6   290.7   115.1
+
+
+--- TES_sResp_M05_20241014 ---
+[kalman] in : /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20241014/predictions.npz
+[kalman] out: /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20241014/predictions_kalman.npz
+[kalman]   pid=TES_sResp_M05_20241014  (n_ch=384, n_chunks=100, 3)  chunk_dur=3.0s  → 5.0 min
+
+[kalman] running filter+smoother: Q=100 µm²  R∈[50,3000] µm  scale_R=1.0
+[kalman] computing baseline aggregations…
+
+[kalman] time-to-stability (K=10 chunks = 30s):
+  100µm: 326/384 ch stable, median 228.0s
+  200µm: 372/384 ch stable, median 168.0s
+
+[kalman] outlier rate (>1000µm from reference):
+  raw vs per-channel median:    37.2969%
+  raw vs Kalman-smoothed track: 37.3229%
+
+[kalman] saving /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20241014/predictions_kalman.npz …
+[kalman] sidecar /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20241014/predictions_kalman.json
+[kalman] done.
+
+=== TES_sResp_M05_20241014 ===
+  pid=TES_sResp_M05_20241014  n_ch=384  n_chunks=100  chunk_dur=3.0s  → 5.0 min  pred_key=pred_xyz_gauss  has_gt=False
+  wrote /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20241014/channel_timechunk_gauss.png
+
+[+] rendered 1 session(s)
+
+=== TES_sResp_M05_20241014 ===
+  pid=TES_sResp_M05_20241014  n_ch=384  n_chunks=100  chunk_dur=3.0s  → 5.0 min  pred_key=pred_xyz_kalman_smooth  has_gt=False
+  wrote /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20241014/channel_timechunk_kalman_smooth.png
+
+[+] rendered 1 session(s)
+[plot] in:    /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20241014/predictions_kalman.npz
+[plot] curve: /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20241014/stability_curve.png
+[plot] table: /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20241014/aggregation_table.txt
+[plot] wrote /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20241014/stability_curve.png
+[plot] wrote /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20241014/aggregation_table.txt
+
+PID: TES_sResp_M05_20241014
+  n_channels: 384
+  n_chunks:   100
+  chunk_dur:  3.0s
+
+Per-channel disagreement vs kalman_smooth_mean (treated as offline best estimate):
+
+  method                 |  mean ‖Δ‖   med ‖Δ‖ |  bias AP  bias DV  bias ML |  std AP  std DV  std ML    (all µm)
+  ---------------------------------------------------------------------------------------------------------------
+  unweighted_mean        |     249.3     251.3 |   -204.3    +13.2    -60.7 |   882.6   257.3   104.1
+  weighted_mean          |       5.2       3.5 |     +3.5     -0.8     +1.5 |   968.0   296.4    97.2
+  median                 |     230.3     226.6 |   -177.6    +11.3    -67.9 |   935.1   276.6   109.5
+  trimmed_mean           |     214.9     212.6 |   -171.3    +20.1    -64.3 |   908.0   261.2   107.5
+  kalman_filter_T        |      61.5      51.9 |    +22.8    -37.1    +15.3 |   993.1   300.3    99.6
+  kalman_smooth_T        |      61.5      51.9 |    +22.8    -37.1    +15.3 |   993.1   300.3    99.6
+  kalman_smooth_mean     |       0.0       0.0 |     +0.0     +0.0     +0.0 |   964.6   295.8    96.7
+
+
+--- TES_sResp_M05_20241015 ---
+[kalman] in : /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20241015/predictions.npz
+[kalman] out: /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20241015/predictions_kalman.npz
+[kalman]   pid=TES_sResp_M05_20241015  (n_ch=384, n_chunks=100, 3)  chunk_dur=3.0s  → 5.0 min
+
+[kalman] running filter+smoother: Q=100 µm²  R∈[50,3000] µm  scale_R=1.0
+[kalman] computing baseline aggregations…
+
+[kalman] time-to-stability (K=10 chunks = 30s):
+  100µm: 384/384 ch stable, median 174.0s
+  200µm: 384/384 ch stable, median 114.0s
+
+[kalman] outlier rate (>1000µm from reference):
+  raw vs per-channel median:    30.8568%
+  raw vs Kalman-smoothed track: 30.9271%
+
+[kalman] saving /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20241015/predictions_kalman.npz …
+[kalman] sidecar /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20241015/predictions_kalman.json
+[kalman] done.
+
+=== TES_sResp_M05_20241015 ===
+  pid=TES_sResp_M05_20241015  n_ch=384  n_chunks=100  chunk_dur=3.0s  → 5.0 min  pred_key=pred_xyz_gauss  has_gt=False
+  wrote /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20241015/channel_timechunk_gauss.png
+
+[+] rendered 1 session(s)
+
+=== TES_sResp_M05_20241015 ===
+  pid=TES_sResp_M05_20241015  n_ch=384  n_chunks=100  chunk_dur=3.0s  → 5.0 min  pred_key=pred_xyz_kalman_smooth  has_gt=False
+  wrote /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20241015/channel_timechunk_kalman_smooth.png
+
+[+] rendered 1 session(s)
+[plot] in:    /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20241015/predictions_kalman.npz
+[plot] curve: /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20241015/stability_curve.png
+[plot] table: /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20241015/aggregation_table.txt
+[plot] wrote /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20241015/stability_curve.png
+[plot] wrote /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20241015/aggregation_table.txt
+
+PID: TES_sResp_M05_20241015
+  n_channels: 384
+  n_chunks:   100
+  chunk_dur:  3.0s
+
+Per-channel disagreement vs kalman_smooth_mean (treated as offline best estimate):
+
+  method                 |  mean ‖Δ‖   med ‖Δ‖ |  bias AP  bias DV  bias ML |  std AP  std DV  std ML    (all µm)
+  ---------------------------------------------------------------------------------------------------------------
+  unweighted_mean        |     177.9     164.3 |   -105.8     +8.9    -36.8 |   874.1   267.9    74.3
+  weighted_mean          |       1.3       0.8 |     -0.3     -0.1     +0.3 |   974.9   305.6    76.9
+  median                 |     120.2      95.7 |    -28.8     +6.5    -30.7 |   916.1   283.1    80.2
+  trimmed_mean           |     138.5     124.1 |    -59.3     +5.4    -32.1 |   890.2   271.2    77.3
+  kalman_filter_T        |      34.9      32.6 |    -26.4    -16.6     +6.3 |   989.2   303.2    72.8
+  kalman_smooth_T        |      34.9      32.6 |    -26.4    -16.6     +6.3 |   989.2   303.2    72.8
+  kalman_smooth_mean     |       0.0       0.0 |     +0.0     +0.0     +0.0 |   974.2   305.0    76.9
+
+
+============================================================
+[overnight] SUMMARY
+============================================================
+[overnight] processed: 5 sessions
+[overnight] failures:  0 sessions
+[overnight] outputs under: /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/<session>/
+  TES_sResp_M05_20240729:
+    aggregation_table.txt
+    channel_timechunk_gauss.png
+    channel_timechunk_kalman_smooth.png
+    predictions.npz
+    predictions_kalman.json
+    predictions_kalman.npz
+    stability_curve.png
+  TES_sResp_M05_20240730:
+    aggregation_table.txt
+    channel_timechunk_gauss.png
+    channel_timechunk_kalman_smooth.png
+    predictions.npz
+    predictions_kalman.json
+    predictions_kalman.npz
+    stability_curve.png
+  TES_sResp_M05_20240731:
+    aggregation_table.txt
+    channel_timechunk_gauss.png
+    channel_timechunk_kalman_smooth.png
+    predictions.npz
+    predictions_kalman.json
+    predictions_kalman.npz
+    stability_curve.png
+  TES_sResp_M05_20241014:
+    aggregation_table.txt
+    channel_timechunk_gauss.png
+    channel_timechunk_kalman_smooth.png
+    predictions.npz
+    predictions_kalman.json
+    predictions_kalman.npz
+    stability_curve.png
+  TES_sResp_M05_20241015:
+    aggregation_table.txt
+    channel_timechunk_gauss.png
+    channel_timechunk_kalman_smooth.png
+    predictions.npz
+    predictions_kalman.json
+    predictions_kalman.npz
+    stability_curve.png
+[overnight] DONE.

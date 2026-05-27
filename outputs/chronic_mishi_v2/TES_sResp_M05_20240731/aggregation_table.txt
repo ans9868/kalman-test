@@ -1,0 +1,16 @@
+PID: TES_sResp_M05_20240731
+  n_channels: 384
+  n_chunks:   100
+  chunk_dur:  3.0s
+
+Per-channel disagreement vs kalman_smooth_mean (treated as offline best estimate):
+
+  method                 |  mean ‖Δ‖   med ‖Δ‖ |  bias AP  bias DV  bias ML |  std AP  std DV  std ML    (all µm)
+  ---------------------------------------------------------------------------------------------------------------
+  unweighted_mean        |     174.6     146.3 |   -163.8    -45.2    -22.7 |   616.7   283.8   123.4
+  weighted_mean          |       1.0       0.7 |     +0.8     +0.0     +0.4 |   582.3   290.8   114.9
+  median                 |     147.0     131.2 |   -121.8    -18.3    -35.3 |   624.6   325.6   133.7
+  trimmed_mean           |     150.9     130.4 |   -142.2    -28.1    -28.6 |   623.5   301.8   126.3
+  kalman_filter_T        |      24.5      22.6 |    +16.9     +1.6    +10.2 |   585.5   291.2   114.9
+  kalman_smooth_T        |      24.5      22.6 |    +16.9     +1.6    +10.2 |   585.5   291.2   114.9
+  kalman_smooth_mean     |       0.0       0.0 |     +0.0     +0.0     +0.0 |   582.6   290.7   115.1

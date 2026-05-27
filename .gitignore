@@ -6,8 +6,8 @@ __pycache__/
 *.pyc
 
 # inference outputs
-outputs/
-logs/
+# outputs/
+# logs/
 
 # test artifacts (Kalman / viz / plot outputs)
 mock_predictions*.npz

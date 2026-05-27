@@ -1,0 +1,22 @@
+{
+  "session": "MOCK_SESSION",
+  "n_channels": 384,
+  "n_chunks": 100,
+  "chunk_dur_sec": 3.0,
+  "duration_min": 5.0,
+  "median_time_to_stable_100um_sec": 99.0,
+  "median_time_to_stable_200um_sec": 33.0,
+  "frac_channels_stable_100um": 0.921875,
+  "frac_channels_stable_200um": 0.9947916666666666,
+  "raw_outlier_rate": 0.2716927083333333,
+  "kalman_outlier_rate": 0.27541666666666664,
+  "kalman_params": {
+    "Q": 100.0,
+    "R_min": 50.0,
+    "R_max": 3000.0,
+    "scale_R": 1.0,
+    "stability_K": 10,
+    "outlier_um": 1000.0,
+    "trim_frac": 0.1
+  }
+}

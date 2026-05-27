@@ -1,0 +1,25 @@
+[prelude] HOME=/scratch/ans9868/kalman_scratch/home
+[prelude] CONDA_PREFIX=/scratch/ans9868/conda_storage/kalman
+[prelude] python=/scratch/ans9868/conda_storage/kalman/bin/python  Python 3.11.15
+[infer] sessions: TES_sResp_M05_20240729
+[infer] ckpt:     /scratch/pl2820/ray_results/benchmarks/finetune_xyz_75k_joint_lambda_3_0_7741664/checkpoints/finetune_best_valmse.pt
+[infer] out_root: /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2
+[infer] window:   5
+[chronic_v2] device: cuda:0
+[chronic_v2] Loading Path B ckpt: finetune_best_valmse.pt
+[chronic_v2]   ep 46  val_mse 0.0083
+[chronic_v2] 
+=== TES_sResp_M05_20240729 ===
+[chronic_v2]   TES_sResp_M05_20240729: 233.9 min total (17544523 samples)
+[chronic_v2]   Window: [6868s, 7168s] = 100 chunks × 3.0s
+[chronic_v2]   Calibration: raw_std=314.0 → scale=2.83e-07
+[chronic_v2]     chunk 20/100  (14s elapsed)
+[chronic_v2]     chunk 40/100  (21s elapsed)
+[chronic_v2]     chunk 60/100  (27s elapsed)
+[chronic_v2]     chunk 80/100  (33s elapsed)
+[chronic_v2]     chunk 100/100  (39s elapsed)
+[chronic_v2]   Done: 39s for 100 chunks × 384 ch
+[chronic_v2]   Saved /scratch/ans9868/kalman-test/outputs/chronic_mishi_v2/TES_sResp_M05_20240729/predictions.npz
+[chronic_v2] 
+Done. Run viz_session_inference_timechunk.py per session.
+[infer] DONE.

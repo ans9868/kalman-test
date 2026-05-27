@@ -1,0 +1,16 @@
+PID: MOCK_SESSION
+  n_channels: 384
+  n_chunks:   100
+  chunk_dur:  3.0s
+
+Per-channel disagreement vs kalman_smooth_mean (treated as offline best estimate):
+
+  method                 |  mean ‖Δ‖   med ‖Δ‖ |  bias AP  bias DV  bias ML |  std AP  std DV  std ML    (all µm)
+  ---------------------------------------------------------------------------------------------------------------
+  unweighted_mean        |      91.5      83.5 |     -3.8     +2.1     -0.5 |  1443.8    77.9   122.5
+  weighted_mean          |       7.6       5.7 |     +0.0     +0.2     -0.2 |  1449.2    85.4   125.1
+  median                 |      91.5      73.7 |     -5.5     +1.9     -1.8 |  1445.0    68.2   111.4
+  trimmed_mean           |      93.7      78.4 |     -6.2     +3.8     -0.3 |  1445.5    66.8   114.7
+  kalman_filter_T        |      77.5      62.9 |     -3.2     +7.0     +0.1 |  1447.9   104.6   139.6
+  kalman_smooth_T        |      77.5      62.9 |     -3.2     +7.0     +0.1 |  1447.9   104.6   139.6
+  kalman_smooth_mean     |       0.0       0.0 |     +0.0     +0.0     +0.0 |  1449.2    83.2   124.9
